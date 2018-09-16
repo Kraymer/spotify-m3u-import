@@ -120,8 +120,11 @@ def format_track_info(track):
 
 if __name__ == "__main__":
     args = parse_arguments()
-    sp = spotipy.Spotify()
-
+    # sp = spotipy.Spotify()
+    from spotipy.oauth2 import SpotifyClientCredentials
+    client_credentials_manager = SpotifyClientCredentials(client_id='448b118f2dc34dc790a02484d4a02095',
+                                              client_secret='a33ca43fa60f4113af2c5b122404099f')
+    sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
     logger = logging.getLogger(__name__)
     if args.debug:
         logger.setLevel(logging.DEBUG)
@@ -157,7 +160,6 @@ if __name__ == "__main__":
 
     if token:
         try:
-            sp = spotipy.Spotify(auth=token)
             sp.trace = False
             playlist = sp.user_playlist_create(spotify_username, spotify_playlist_name, public=False)
             if len(spotify_tracks) > 100:
